@@ -1,9 +1,27 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class Main {
 
     public static void main (String[] args){
-        System.out.println("hello world1");
-        Worker worker1 = new Worker();
-        worker1.setFirstname("Ivan");
-        System.out.println(worker1.getFirstname());
+        ArrayList<Worker> workers = new ArrayList<>();
+        try {
+            BufferedReader  bufferedReader= new BufferedReader(new FileReader("src/main/resources/Base.txt"));
+            String currentLine ;
+            while (((currentLine = bufferedReader.readLine()) != null) && ((currentLine  != ""))){
+                workers.add(new Worker(currentLine));
+            }
+            bufferedReader.close();
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+                workers.stream()
+                    .map(x -> x.getFirstname() + " | " + x.getSecondname() +" | " + x.getSalary() +" | " + x.getDepartament())
+                    .forEach(System.out::println);
+
     }
+
 }
+

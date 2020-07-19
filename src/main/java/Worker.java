@@ -1,10 +1,24 @@
+import javax.xml.soap.SOAPPart;
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
 public class Worker {
-    String firstname;
-    String secondname;
-    Departament departament;
+    private String firstname;
+    private String secondname;
+    private String departament;
+    private Float salary;
 
-    public Worker(){
+//    Departament departament;
 
+    public Worker(String line)  {
+       // String pattern = "\\s+|,\\s*";
+        String[] workerInfo = line.split(" ");
+        this.firstname= workerInfo[0];
+        System.out.println("----"+workerInfo.length);
+       // System.out.println(Arrays.toString(workerInfo));
+        this.secondname=workerInfo[1];
+        this.salary=Float.parseFloat(workerInfo[2]);
+        this.departament= workerInfo[3];
     }
 
     public String getFirstname() {
@@ -15,11 +29,11 @@ public class Worker {
         return secondname;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public String getDepartament() {
+        return departament;
     }
 
-    public void setSecondname(String secondname) {
-        this.secondname = secondname;
+    public Float getSalary() {
+        return salary;
     }
 }
