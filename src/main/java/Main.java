@@ -10,7 +10,7 @@ public class Main {
         try {
             BufferedReader  bufferedReader= new BufferedReader(new FileReader("src/main/resources/Base.txt"));
             String currentLine ;
-            while (((currentLine = bufferedReader.readLine()) != null) && ((currentLine  != ""))){
+            while (((currentLine = bufferedReader.readLine()) != null)){
                 workers.add(new Worker(currentLine));
             }
             bufferedReader.close();
