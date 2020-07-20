@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class Main {
+public class Main  {
 
     public static void main(String[] args) {
         getListWorkers();
@@ -13,13 +13,13 @@ public class Main {
         ArrayList<Worker> workers = new ArrayList<>();
         Set<Departament> Departaments = new HashSet<>();
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/Base.txt"));
+            BufferedReader bufferedReader = ConnectionWithFile.connectionOpen();
             String currentLine;
             while (((currentLine = bufferedReader.readLine()) != null)) {
                 //workers.add(new Worker(currentLine));
                 Departaments.add(new Departament(currentLine));
             }
-            bufferedReader.close();
+            ConnectionWithFile.connectionClose(bufferedReader);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

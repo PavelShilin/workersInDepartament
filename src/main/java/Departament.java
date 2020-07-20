@@ -1,12 +1,13 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Departament{
+public class Departament  {
     String name;
     float avgSallary;
    // private ArrayList<Worker> workers = new ArrayList();
@@ -14,10 +15,9 @@ public class Departament{
 
     public Departament(String line){
                 String[] workerInfo = line.split(" ");
-        //this.addWorker(line);
+
         this.name= workerInfo[3];
         addWorker();
-
     }
 
     public String getName() {
@@ -30,7 +30,7 @@ public class Departament{
 
     public void addWorker(){
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/Base.txt"));
+           BufferedReader bufferedReader = ConnectionWithFile.connectionOpen();
             String currentLine;
             while (((currentLine = bufferedReader.readLine()) != null)) {
                 String[] workerInfo = currentLine.split(" ");
@@ -38,7 +38,7 @@ public class Departament{
                         workers.add(workerInfo[0]+" "+workerInfo[1]+" ");
                     }
             }
-            bufferedReader.close();
+            ConnectionWithFile.connectionClose(bufferedReader);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -46,7 +46,7 @@ public class Departament{
 
     public float getAvgSallary() {
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/Base.txt"));
+            BufferedReader bufferedReader = ConnectionWithFile.connectionOpen();
             String currentLine;
             int count=0;
             float sum=0;
@@ -58,14 +58,12 @@ public class Departament{
                     }
             }
             avgSallary = sum/count;
-            bufferedReader.close();
+            ConnectionWithFile.connectionClose(bufferedReader);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         return avgSallary;
     }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,7 +73,6 @@ public class Departament{
                 Objects.equals(name, that.name);
 
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(name, avgSallary);
