@@ -1,80 +1,65 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.Connection;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.security.spec.RSAOtherPrimeInfo;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class Departament  {
-    String name;
-    float avgSallary;
-   // private ArrayList<Worker> workers = new ArrayList();
-   private ArrayList<String> workers = new ArrayList<>();
+    String nameDepartament;
+    BigDecimal avgSallary;
+   private ArrayList<Worker> workers = new ArrayList<>();
 
-    public Departament(String line){
-                String[] workerInfo = line.split(" ");
-
-        this.name= workerInfo[3];
-        addWorker();
+    public Departament(String depName){
+        this.nameDepartament =  depName;
     }
 
     public String getName() {
-        return name;
+        return nameDepartament;
     }
 
-    public ArrayList<String> getWorkers() {
+    public void addWorker (Worker workersInDepartament) {
+        this.workers.add(workersInDepartament);
+    }
+    public void removeWorker(Worker workerOnRemove) {
+        this.workers.remove(workerOnRemove);
+    }
+
+
+    public ArrayList<Worker> getWorkers() {
         return workers;
     }
-
-    public void addWorker(){
-        try {
-           BufferedReader bufferedReader = ConnectionWithFile.connectionOpen();
-            String currentLine;
-            while (((currentLine = bufferedReader.readLine()) != null)) {
-                String[] workerInfo = currentLine.split(" ");
-                    if (workerInfo[3].equals(this.name)){
-                        workers.add(workerInfo[0]+" "+workerInfo[1]+" ");
-                    }
-            }
-            ConnectionWithFile.connectionClose(bufferedReader);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+    public int getCountWorkerInDepartament() {
+        return this.workers.size();
     }
 
-    public float getAvgSallary() {
-        try {
-            BufferedReader bufferedReader = ConnectionWithFile.connectionOpen();
-            String currentLine;
-            int count=0;
-            float sum=0;
-            while (((currentLine = bufferedReader.readLine()) != null)) {
-                String[] workerInfo = currentLine.split(" ");
-                if (workerInfo[3].equals(this.name)){
-                    count++;
-                    sum=sum+Float.parseFloat(workerInfo[2]);
-                    }
-            }
-            avgSallary = sum/count;
-            ConnectionWithFile.connectionClose(bufferedReader);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+    public BigDecimal getAvgSallary (){
+        BigDecimal summaZP = BigDecimal.valueOf(0);
+                for (Worker workerInfo : this.workers) {
+            summaZP = summaZP.add(workerInfo.getSalary());
+
         }
-        return avgSallary;
+        if (getCountWorkerInDepartament() == 0){
+            throw new ArithmeticException("В отделе "+ this.nameDepartament  +" нет сотрудников");
+        } else{
+            this.avgSallary = summaZP.divide(BigDecimal.valueOf(getCountWorkerInDepartament()),2,RoundingMode.HALF_UP);
+            return this.avgSallary;
+        }
+
     }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Departament)) return false;
         Departament that = (Departament) o;
-        return Float.compare(that.avgSallary, avgSallary) == 0 &&
-                Objects.equals(name, that.name);
-
+        return Objects.equals(nameDepartament, that.nameDepartament) &&
+                Objects.equals(avgSallary, that.avgSallary) &&
+                Objects.equals(workers, that.workers);
     }
+
     @Override
     public int hashCode() {
-        return Objects.hash(name, avgSallary);
+        return Objects.hash(nameDepartament, avgSallary, workers);
     }
 }
