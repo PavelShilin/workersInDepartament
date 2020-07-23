@@ -1,6 +1,5 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.security.spec.RSAOtherPrimeInfo;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -20,6 +19,10 @@ public class Departament  {
     public void addWorker (Worker workersInDepartament) {
         this.workers.add(workersInDepartament);
     }
+    public void  setWorker (Worker workersInDepartament, int number) {
+        this.workers.set(number,workersInDepartament);
+
+    }
     public void removeWorker(Worker workerOnRemove) {
         this.workers.remove(workerOnRemove);
     }
@@ -28,6 +31,7 @@ public class Departament  {
     public ArrayList<Worker> getWorkers() {
         return workers;
     }
+
     public int getCountWorkerInDepartament() {
         return this.workers.size();
     }
