@@ -5,7 +5,6 @@ import java.util.Objects;
 
 public class Departament  {
     String nameDepartament;
-
    private ArrayList<Worker> workers = new ArrayList<>();
 
     public Departament(String depName){
