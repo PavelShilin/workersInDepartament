@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Departament  {
     String nameDepartament;
-    BigDecimal avgSallary;
+
    private ArrayList<Worker> workers = new ArrayList<>();
 
     public Departament(String depName){
@@ -38,15 +38,13 @@ public class Departament  {
 
     public BigDecimal getAvgSallary (){
         BigDecimal summaZP = BigDecimal.valueOf(0);
-                for (Worker workerInfo : this.workers) {
+        for (Worker workerInfo : this.workers) {
             summaZP = summaZP.add(workerInfo.getSalary());
-
         }
         if (getCountWorkerInDepartament() == 0){
             throw new ArithmeticException("В отделе "+ this.nameDepartament  +" нет сотрудников");
         } else{
-            this.avgSallary = summaZP.divide(BigDecimal.valueOf(getCountWorkerInDepartament()),2,RoundingMode.HALF_UP);
-            return this.avgSallary;
+            return summaZP.divide(BigDecimal.valueOf(getCountWorkerInDepartament()),2,RoundingMode.HALF_UP);
         }
 
     }
@@ -57,13 +55,12 @@ public class Departament  {
         if (this == o) return true;
         if (!(o instanceof Departament)) return false;
         Departament that = (Departament) o;
-        return Objects.equals(nameDepartament, that.nameDepartament) &&
-                Objects.equals(avgSallary, that.avgSallary) &&
+        return  Objects.equals(nameDepartament, that.nameDepartament) &&
                 Objects.equals(workers, that.workers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nameDepartament, avgSallary, workers);
+        return Objects.hash(nameDepartament,  workers);
     }
 }
