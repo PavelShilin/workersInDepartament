@@ -7,10 +7,10 @@ public class Worker {
     private BigDecimal salary;
 
 
-    public Worker(String firstname, String secondname, BigDecimal salary)  {
-        this.firstname= firstname;
-        this.secondname=secondname;
-        this.salary=salary;
+    public Worker(String firstname, String secondname, BigDecimal salary) {
+        this.firstname = firstname;
+        this.secondname = secondname;
+        this.salary = salary;
 
     }
 
@@ -40,6 +40,6 @@ public class Worker {
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstname, secondname,  salary);
+        return Objects.hash(firstname, secondname, salary);
     }
 }
