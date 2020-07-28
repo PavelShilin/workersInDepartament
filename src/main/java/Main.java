@@ -16,7 +16,7 @@ public class Main {
     }
 
 
-    public static void getMapFromFile(String[] args, Map<String, Departament> customDepartaments) {
+    private static void getMapFromFile(String[] args, Map<String, Departament> customDepartaments) {
         try (BufferedReader bufferedReader = new BufferedReader(
                 new FileReader(args[0]))) {
             String currentLine;
@@ -38,7 +38,7 @@ public class Main {
         }
     }
 
-    public static void printInConsole(Map<String, Departament> departamentMap) {
+    private static void printInConsole(Map<String, Departament> departamentMap) {
         for (Map.Entry<String, Departament> entry : departamentMap.entrySet()) {
             System.out.println("Департамент: " + entry.getValue().nameDepartament + " // Средняя ЗП в департаменте: " + entry.getValue().getAvgSallary());
             for (Worker work : entry.getValue().getWorkers()) {
