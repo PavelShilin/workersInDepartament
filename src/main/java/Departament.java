@@ -19,15 +19,6 @@ public class Departament  {
         this.workers.add(workersInDepartament);
     }
 
-    public void setWorker(Worker workersInDepartament, int number) {
-        this.workers.set(number, workersInDepartament);
-    }
-
-    public void removeWorker(Worker workerOnRemove) {
-        this.workers.remove(workerOnRemove);
-    }
-
-
     public ArrayList<Worker> getWorkers() {
         return workers;
     }
@@ -48,7 +39,6 @@ public class Departament  {
         }
 
     }
-
 
     @Override
     public boolean equals(Object o) {
