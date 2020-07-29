@@ -1,3 +1,5 @@
+package org.one;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
