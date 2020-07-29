@@ -1,27 +1,27 @@
 package org.one;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class Departament  {
-    String nameDepartament;
-    private ArrayList<Worker> workers = new ArrayList<>();
+public class Department {
+    String nameDepartment;
+    private List<Worker> workers = new ArrayList<>();
 
-    public Departament(String depName) {
-        this.nameDepartament = depName;
+    public Department(String depName) {
+        this.nameDepartment = depName;
     }
 
     public String getName() {
-        return nameDepartament;
+        return nameDepartment;
     }
 
     public void addWorker(Worker workersInDepartament) {
         this.workers.add(workersInDepartament);
     }
 
-    public ArrayList<Worker> getWorkers() {
+    public List<Worker> getWorkers() {
         return workers;
     }
 
@@ -35,7 +35,7 @@ public class Departament  {
             summaZP = summaZP.add(workerInfo.getSalary());
         }
         if (getCountWorkerInDepartament() == 0) {
-            throw new ArithmeticException("В отделе " + this.nameDepartament + " нет сотрудников");
+            throw new ArithmeticException("В отделе " + this.nameDepartment + " нет сотрудников");
         } else {
             return summaZP.divide(BigDecimal.valueOf(getCountWorkerInDepartament()), 2, RoundingMode.HALF_UP);
         }
@@ -45,14 +45,14 @@ public class Departament  {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Departament)) return false;
-        Departament that = (Departament) o;
-        return Objects.equals(nameDepartament, that.nameDepartament) &&
+        if (!(o instanceof Department)) return false;
+        Department that = (Department) o;
+        return Objects.equals(nameDepartment, that.nameDepartment) &&
                 Objects.equals(workers, that.workers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nameDepartament, workers);
+        return Objects.hash(nameDepartment, workers);
     }
 }
