@@ -36,7 +36,6 @@ public class Worker {
         Worker worker = (Worker) o;
         return Objects.equals(firstname, worker.firstname) &&
                 Objects.equals(secondname, worker.secondname) &&
-
                 Objects.equals(salary, worker.salary);
     }
 

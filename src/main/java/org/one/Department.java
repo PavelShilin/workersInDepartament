@@ -42,6 +42,32 @@ public class Department {
 
     }
 
+    /* Получить среднюю зарплату отдела department без сотрудника worker*/
+    public BigDecimal getAvgSallaryWithout(Worker customWorker) {
+        BigDecimal summaZP = BigDecimal.valueOf(0);
+        for (Worker workerInfo : this.workers) {
+            if (workerInfo.equals(customWorker)) {
+                continue;
+            }
+            summaZP = summaZP.add(workerInfo.getSalary());
+        }
+        if (getCountWorkerInDepartament() == 0) {
+            throw new ArithmeticException("В отделе " + this.nameDepartment + " нет сотрудников");
+        } else {
+            return summaZP.divide(BigDecimal.valueOf(getCountWorkerInDepartament() - 1), 2, RoundingMode.HALF_UP);
+        }
+    }
+
+    /* Получить среднюю зарплату отдела department c сотрудником worker*/
+    public BigDecimal getAvgSallaryWith(Worker customWorker) {
+        BigDecimal summaZP = BigDecimal.valueOf(0).add(customWorker.getSalary());
+        for (Worker workerInfo : this.workers) {
+            summaZP = summaZP.add(workerInfo.getSalary());
+        }
+        return summaZP.divide(BigDecimal.valueOf(getCountWorkerInDepartament() + 1), 2, RoundingMode.HALF_UP);
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
