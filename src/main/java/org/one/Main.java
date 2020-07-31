@@ -7,16 +7,17 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        if (args[0].isEmpty()) {
-            System.out.println("Введен неверный путь/имя к файлу с входными данными: " + args[0]);
-        } else if (args[1].isEmpty()) {
-            System.out.println("Введен неверный путь/имя к файлу с выходными данными");
-        } else {
+        try {
             Map<String, Department> departments = getMapFromFile(args[0]);
             printInConsole(departments);
+            if (checkWorkerOnTransfer(departments).isEmpty()) {
+                saveInFile(new ArrayList(Collections.singleton("Подходящих переводов нет")), args[1]);
+            }
             saveInFile(checkWorkerOnTransfer(departments), args[1]);
-
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Не введён путь к входному/выходному файлу ");
         }
+
     }
 
     private static Map<String, Department> getMapFromFile(String pathAndNameFile) {
@@ -37,10 +38,6 @@ public class Main {
                     System.out.println("Некорректно введена зарплата в строке - " + i);
                     key = false;
                 }
-                if (lineFromFile.length != 4) {
-                    System.out.println("Невведён один(несколько) из параметров в строке номер - " + i);
-                    key = false;
-                }
                 if (nameSortr.length() < 1) {
                     System.out.println("Пропуск имени сотрудника в строке - " + i);
                     key = false;
@@ -53,6 +50,7 @@ public class Main {
                     System.out.println("Пропуск департамента сотрудника в строке - " + i);
                     key = false;
                 }
+
                 if (!departments.containsKey(departmentSotr) && key) {
                     departments.put(departmentSotr, new Department(departmentSotr));
                 }
@@ -60,8 +58,10 @@ public class Main {
                     departments.get(lineFromFile[3].trim()).addWorker(new Worker(nameSortr, secondNameSortr, sallarySotr));
                 }
             }
-        } catch (IOException | NumberFormatException e) {
-            System.out.println("Ошибка считывания файла или зарплата введена не верно " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Ошибка считывания файла " + e.getMessage());
+        }catch (NumberFormatException ex) {
+            System.out.println("Зарплата введена не верно " + ex.getMessage());
         }
         return departments;
     }
@@ -89,9 +89,6 @@ public class Main {
                     }
                 }
             }
-        }
-        if (resultReshuffle.isEmpty()) {
-            resultReshuffle.add("Подходящих под условие переводов нет");
         }
         return resultReshuffle;
     }
