@@ -8,16 +8,16 @@ public class Main {
 
     public static void main(String[] args) {
         if (args[0].isEmpty()) {
-            System.out.println("Введен неверный путь/имя к файлу с входными данными");
+            System.out.println("Введен неверный путь/имя к файлу с входными данными: " + args[0]);
         } else if (args[1].isEmpty()) {
             System.out.println("Введен неверный путь/имя к файлу с выходными данными");
         } else {
             Map<String, Department> departments = getMapFromFile(args[0]);
             printInConsole(departments);
             saveInFile(checkWorkerOnTransfer(departments), args[1]);
+
         }
     }
-
 
     private static Map<String, Department> getMapFromFile(String pathAndNameFile) {
         Map<String, Department> departments = new HashMap<String, Department>();
@@ -31,21 +31,36 @@ public class Main {
                 String nameSortr = lineFromFile[0].trim();
                 String secondNameSortr = lineFromFile[1].trim();
                 String departmentSotr = lineFromFile[3].trim();
-                try {BigDecimal sallarySotr = new BigDecimal(lineFromFile[2].trim());}
-                    catch (NumberFormatException e){
-                    System.out.println("dss");
+                BigDecimal sallarySotr = new BigDecimal(lineFromFile[2].trim());
+                boolean key = true;
+                if (sallarySotr.compareTo(new BigDecimal("0")) < 0) {
+                    System.out.println("Некорректно введена зарплата в строке - " + i);
+                    key = false;
                 }
-
-                if (lineFromFile.length != 4 || lineFromFile[0].equals(" ") || lineFromFile[1].equals(" ") || lineFromFile[2].equals(" ") || lineFromFile[3].equals(" ")) {
-                    System.out.println("Ошибка: в строке - " + i);
-                } else {
-                    if (!departments.containsKey(lineFromFile[3].trim())) {
-                        departments.put(lineFromFile[3].trim(), new Department(lineFromFile[3].trim()));
-                    }
-                  //  departments.get(lineFromFile[3].trim()).addWorker(new Worker(lineFromFile[0].trim(), lineFromFile[1].trim()));
+                if (lineFromFile.length != 4) {
+                    System.out.println("Невведён один(несколько) из параметров в строке номер - " + i);
+                    key = false;
+                }
+                if (nameSortr.length() < 1) {
+                    System.out.println("Пропуск имени сотрудника в строке - " + i);
+                    key = false;
+                }
+                if (secondNameSortr.length() < 1) {
+                    System.out.println("Пропуск фамилии сотрудника в строке - " + i);
+                    key = false;
+                }
+                if (departmentSotr.length() < 1) {
+                    System.out.println("Пропуск департамента сотрудника в строке - " + i);
+                    key = false;
+                }
+                if (!departments.containsKey(departmentSotr) && key) {
+                    departments.put(departmentSotr, new Department(departmentSotr));
+                }
+                if (key) {
+                    departments.get(lineFromFile[3].trim()).addWorker(new Worker(nameSortr, secondNameSortr, sallarySotr));
                 }
             }
-        } catch (IOException  e) {
+        } catch (IOException | NumberFormatException e) {
             System.out.println("Ошибка считывания файла или зарплата введена не верно " + e.getMessage());
         }
         return departments;
