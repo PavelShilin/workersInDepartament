@@ -89,8 +89,8 @@ public class Main {
                                 + entry.getValue().getName() + "со средней ЗП отдела=" + entry.getValue().getAvgSallary()
                                 + " , можно перевести в отдел: " + entry2.getValue().getName() + " со средней ЗП отдела="
                                 + entry2.getValue().getAvgSallary() + ". После данного перевода средняя ЗП в отделе: "
-                                + entry.getValue().getName() + " станет=" + entry.getValue().getAvgSallaryWithout(work) +
-                                " , а в отделе " + entry2.getValue().getName() + " станет =" + entry2.getValue().getAvgSallaryWith(work));
+                                + entry.getValue().getName() + " станет=" + entry.getValue().getAvgSallaryWithout(work)
+                                + " , а в отделе " + entry2.getValue().getName() + " станет =" + entry2.getValue().getAvgSallaryWith(work));
                     }
                 }
             }
