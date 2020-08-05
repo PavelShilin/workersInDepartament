@@ -23,7 +23,6 @@ public class Main {
                 saveInFile(new ArrayList(Collections.singleton("Подходящих переводов нет")), args[1]);
             }
             saveInFile(recursiveCheckOnTransfer(departments), args[1]);
-
         }
     }
 
@@ -85,22 +84,22 @@ public class Main {
 
     private static List recursiveCheckOnTransfer(Map<String, Department> departamentMap) {
         List<String> result = new ArrayList<>();
-        for (Map.Entry<String, Department> deprt1 : departamentMap.entrySet()) {
-            for (Map.Entry<String, Department> deprt2 : departamentMap.entrySet()) {
-                if (deprt1.getValue().getName().equals(deprt2.getValue().getName())) {
+        for (Map.Entry<String, Department> depart1 : departamentMap.entrySet()) {
+            for (Map.Entry<String, Department> depart2 : departamentMap.entrySet()) {
+                if (depart1.getValue().getName().equals(depart2.getValue().getName())) {
                     continue;
                 }
-                int countWorkersInDepartment = deprt1.getValue().getWorkers().size();
+                int countWorkersInDepartment = depart1.getValue().getWorkers().size();
                 for (int i = 1; i < countWorkersInDepartment + 1; i++) {
                     List<List<Worker>> tempList = new ArrayList<>();
-                    tempList = getCombinationFrom(deprt1.getValue().getWorkers(), 0, i);
+                    tempList = getCombinationFrom(depart1.getValue().getWorkers(), 0, i);
                     for (List<Worker> work : tempList) {
-                        BigDecimal avgSalaryInDeaOld1 = deprt1.getValue().getAvgSalary();
-                        BigDecimal avgSalaryInDeaOld2 = deprt2.getValue().getAvgSalary();
-                        BigDecimal avgSalaryInDeaNew1 = deprt1.getValue().getAvgSalaryWithoutList(work);
-                        BigDecimal avgSalaryInDeaNew2 = deprt2.getValue().getAvgSalary(work);
-                        String nameDepartment1 = deprt1.getValue().getName();
-                        String nameDepartment2 = deprt2.getValue().getName();
+                        BigDecimal avgSalaryInDeaOld1 = depart1.getValue().getAvgSalary();
+                        BigDecimal avgSalaryInDeaOld2 = depart2.getValue().getAvgSalary();
+                        BigDecimal avgSalaryInDeaNew1 = depart1.getValue().getAvgSalaryWithoutList(work);
+                        BigDecimal avgSalaryInDeaNew2 = depart2.getValue().getAvgSalary(work);
+                        String nameDepartment1 = depart1.getValue().getName();
+                        String nameDepartment2 = depart2.getValue().getName();
                         if (avgSalaryInDeaNew1.compareTo(avgSalaryInDeaOld1) > 0 && avgSalaryInDeaNew2.compareTo(avgSalaryInDeaOld2) > 0) {
                             result.add("Сотрудников отдела " + nameDepartment1 + " : ");
                             for (Worker workerInfo : work) {
@@ -119,10 +118,10 @@ public class Main {
         return result;
     }
 
-    private static List checkWorkerOnTransfer(Map<String, Department> departamentsMap) {
+    private static List checkWorkerOnTransfer(Map<String, Department> departmentsMap) {
         List<String> resultReshuffle = new ArrayList<>();
-        for (Map.Entry<String, Department> entry : departamentsMap.entrySet()) {
-            for (Map.Entry<String, Department> entry2 : departamentsMap.entrySet()) {
+        for (Map.Entry<String, Department> entry : departmentsMap.entrySet()) {
+            for (Map.Entry<String, Department> entry2 : departmentsMap.entrySet()) {
                 if (entry.getValue().getName().equals(entry2.getValue().getName())) {
                     continue;
                 }

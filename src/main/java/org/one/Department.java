@@ -17,8 +17,8 @@ public class Department {
         return nameDepartment;
     }
 
-    public void addWorker(Worker workersInDepartament) {
-        this.workers.add(workersInDepartament);
+    public void addWorker(Worker workersInDepartment) {
+        this.workers.add(workersInDepartment);
     }
 
     public List<Worker> getWorkers() {
@@ -29,6 +29,7 @@ public class Department {
         return this.workers.size();
     }
 
+    /*Получить среднюю зп отдела */
     public BigDecimal getAvgSalary() {
         BigDecimal summaZP = BigDecimal.valueOf(0);
         for (Worker workerInfo : this.workers) {
@@ -42,6 +43,7 @@ public class Department {
 
     }
 
+    /*Получить среднюю зп отдела с приплюсованным списком сотрудников*/
     public BigDecimal getAvgSalary(List<Worker> workerAdded) {
         BigDecimal sumSalary = BigDecimal.valueOf(0);
         ArrayList<Worker> result = new ArrayList<Worker>(workerAdded.size() + this.workers.size());
@@ -57,22 +59,22 @@ public class Department {
         }
     }
 
-    /* Получить среднюю зарплату отдела department без сотрудника worker*/
+    /* Получить среднюю зарплату отдела department без списка сотрудников  */
     public BigDecimal getAvgSalaryWithoutList(List<Worker> customWorker) {
         BigDecimal sumSalary = BigDecimal.valueOf(0);
-        ArrayList<Worker> result = new ArrayList<Worker>(this.workers.size() - customWorker.size() );
-        result.addAll(this.workers);
         if (!customWorker.isEmpty()) {
+            ArrayList<Worker> result = new ArrayList<Worker>(this.workers.size() - customWorker.size());
+            result.addAll(this.workers);
             for (Worker work : customWorker)
                 result.remove(work);
+            for (Worker workerInfo : result) {
+                if (workerInfo.equals(customWorker)) {
+                    continue;
+                }
+                sumSalary = sumSalary.add(workerInfo.getSalary());
+            }
         } else {
             System.out.println("Ошибка подсчётаса средней ЗП отдела");
-        }
-        for (Worker workerInfo : result) {
-            if (workerInfo.equals(customWorker)) {
-                continue;
-            }
-            sumSalary = sumSalary.add(workerInfo.getSalary());
         }
         if (getCountWorkerInDepartment() == 0) {
             throw new ArithmeticException("В отделе " + this.nameDepartment + " нет сотрудников");
@@ -81,7 +83,7 @@ public class Department {
         }
     }
 
-    /* Получить среднюю зарплату отдела department без сотрудников List worker*/
+    /* Получить среднюю зарплату отдела department без определёного сотрудника */
     public BigDecimal getAvgSalaryWithout(Worker customWorker) {
         BigDecimal summaZP = BigDecimal.valueOf(0);
 
