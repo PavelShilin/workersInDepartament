@@ -6,14 +6,19 @@ import java.util.*;
 
 public class Main {
 
+    private static int count = 0;
+
     public static void main(String[] args) {
         try {
             Map<String, Department> departments = getMapFromFile(args[0]);
-            printInConsole(departments);
+           // printInConsole(departments);
+            recursiveCheckOnTransfer(departments);
             if (checkWorkerOnTransfer(departments).isEmpty()) {
                 saveInFile(new ArrayList(Collections.singleton("Подходящих переводов нет")), args[1]);
             }
             saveInFile(checkWorkerOnTransfer(departments), args[1]);
+
+
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Не введён путь к входному/выходному файлу ");
         }
@@ -76,6 +81,40 @@ public class Main {
         }
     }
 
+    private static void recursiveCheckOnTransfer(Map<String, Department> departamentMap) {
+        for (Map.Entry<String, Department> deprt1 : departamentMap.entrySet()) {
+            for (Map.Entry<String, Department> deprt2 : departamentMap.entrySet()) {
+                if (deprt1.getValue().getName().equals(deprt2.getValue().getName())) {
+                    continue;
+                }
+                int countWorkersInDepartment = deprt1.getValue().getWorkers().size();
+                for (int i = 1; i < countWorkersInDepartment + 1; i++) {
+                    List<List<Worker>> tempList = new ArrayList<>();
+                    tempList = getCombinationFrom(deprt1.getValue().getWorkers(), 0, i);
+                    for (List<Worker> work : tempList) {
+                        BigDecimal avgSallaryInDepOld1 = deprt1.getValue().getAvgSallary();
+                        BigDecimal avgSallaryInDepOld2 = deprt2.getValue().getAvgSallary();
+                        BigDecimal avgSallaryInDepNew1 = deprt1.getValue().getAvgSallaryWithoutList(work);
+                        BigDecimal avgSallaryInDepNew2 = deprt2.getValue().getAvgSallary(work);
+                        String nameDeprtament1 = deprt1.getValue().getName();
+                        String nameDeprtament2 = deprt2.getValue().getName();
+                        if (avgSallaryInDepNew1.compareTo(avgSallaryInDepOld1) > 0 && avgSallaryInDepNew2.compareTo(avgSallaryInDepOld2) > 0) {
+                            System.out.println("Сотрудников отдела " + nameDeprtament1 + " : ");
+                            for (Worker workerInfo : work) {
+                                System.out.print(workerInfo.getSecondname() + "/");
+                            }
+                            System.out.println("\n Можно перевести в отдел " + nameDeprtament2 + " При этом переводе средняя зп в отделе: " + nameDeprtament1 + "  увеличится на "
+                                    + avgSallaryInDepNew1.subtract(avgSallaryInDepOld1) + " руб. а , в отделе " + nameDeprtament2
+                                    + "увеличится на " + avgSallaryInDepNew2.subtract(avgSallaryInDepOld2)
+                                    + "\n средняя зп в отделе:" + nameDeprtament1 + ", сейчас - " + avgSallaryInDepOld1 + " руб. а станет - " + avgSallaryInDepNew1 + " руб."
+                                    + "\n средняя зп в отделе:" + nameDeprtament2 + " сейчас - " + avgSallaryInDepOld2 + " руб. а станет - " + avgSallaryInDepNew2 + " руб.\n");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private static List checkWorkerOnTransfer(Map<String, Department> departamentsMap) {
         List<String> resultReshuffle = new ArrayList<>();
         for (Map.Entry<String, Department> entry : departamentsMap.entrySet()) {
@@ -96,6 +135,32 @@ public class Main {
             }
         }
         return resultReshuffle;
+    }
+
+    public static List<List<org.one.Worker>> getCombinationFrom(List<Worker> objects, int index, int r){
+        int n = objects.size();
+
+        List<List<org.one.Worker>> result = new ArrayList<>();
+        if (r==1){
+            for (int i = index; i <= n-r; i++) {
+                result.add(Collections.singletonList(objects.get(i)));
+
+            }
+        }else{
+            for (int i = index; i <= n-r; i++) {
+                Worker object = objects.get(i);
+                List<List<org.one.Worker>> tmp = getCombinationFrom(objects, i+1, r-1);
+                tmp.forEach(x -> result.add(join(object, x)));
+            }
+        }
+        return result;
+    }
+
+    private static List<Worker> join(Worker first, List<Worker> other){
+        List<Worker> joined = new ArrayList();
+        joined.add(first);
+        joined.addAll(other);
+        return joined;
     }
 
     private static void saveInFile(List<String> result, String pathAndNameFile) {
