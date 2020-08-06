@@ -60,7 +60,6 @@ public class Main {
         }
     }
 
-
     private static List<String> recursiveCheckOnTransfer(Map<String, Department> departmentMap) {
         List<String> result = new ArrayList<>();
         for (Department depart1 : departmentMap.values()) {
@@ -73,22 +72,16 @@ public class Main {
                     List<List<Worker>> tempList;
                     tempList = getCombinationFrom(depart1.getWorkers(), 0, i);
                     for (List<Worker> worker : tempList) {
-                        BigDecimal avgSalaryInDeaOld1 = depart1.getAvgSalary();
-                        BigDecimal avgSalaryInDeaOld2 = depart2.getAvgSalary();
-                        BigDecimal avgSalaryInDeaNew1 = depart1.getAvgSalaryWithoutList(worker);
-                        BigDecimal avgSalaryInDeaNew2 = depart2.getAvgSalary(worker);
-                        String nameDepartment1 = depart1.getName();
-                        String nameDepartment2 = depart2.getName();
-                        if (avgSalaryInDeaNew1.compareTo(avgSalaryInDeaOld1) > 0 && avgSalaryInDeaNew2.compareTo(avgSalaryInDeaOld2) > 0) {
-                            result.add("Сотрудников отдела " + nameDepartment1 + " : ");
+                        if (depart1.getAvgSalaryWithoutList(worker).compareTo(depart1.getAvgSalary()) > 0 && depart2.getAvgSalary(worker).compareTo(depart2.getAvgSalary()) > 0) {
+                            result.add("Сотрудников отдела " + depart1.getName() + " : ");
                             for (Worker workerInfo : worker) {
                                 result.add(workerInfo.getSecondname() + "/");
                             }
-                            result.add("\n Можно перевести в отдел " + nameDepartment2 + " При этом переводе средняя зп в отделе: " + nameDepartment1 + "  увеличится на "
-                                    + avgSalaryInDeaNew1.subtract(avgSalaryInDeaOld1) + " руб. а , в отделе " + nameDepartment2
-                                    + "увеличится на " + avgSalaryInDeaNew2.subtract(avgSalaryInDeaOld2)
-                                    + "\n средняя зп в отделе:" + nameDepartment1 + ", сейчас - " + avgSalaryInDeaOld1 + " руб. а станет - " + avgSalaryInDeaNew1 + " руб."
-                                    + "\n средняя зп в отделе:" + nameDepartment2 + " сейчас - " + avgSalaryInDeaOld2 + " руб. а станет - " + avgSalaryInDeaNew2 + " руб.\n");
+                            result.add("\n Можно перевести в отдел " + depart2.getName() + " При этом переводе средняя зп в отделе: " + depart1.getName() + "  увеличится на "
+                                    + depart1.getAvgSalaryWithoutList(worker).subtract(depart1.getAvgSalary()) + " руб. а , в отделе " + depart2.getName()
+                                    + "увеличится на " + depart2.getAvgSalary(worker).subtract(depart2.getAvgSalary())
+                                    + "\n средняя зп в отделе:" + depart1.getName() + ", сейчас - " + depart1.getAvgSalary() + " руб. а станет - " + depart1.getAvgSalaryWithoutList(worker) + " руб."
+                                    + "\n средняя зп в отделе:" + depart2.getName() + " сейчас - " + depart2.getAvgSalary() + " руб. а станет - " + depart2.getAvgSalary(worker) + " руб.\n");
                         }
                     }
                 }
@@ -125,7 +118,6 @@ public class Main {
         return true;
     }
 
-
     private static List<List<org.one.Worker>> getCombinationFrom(List<Worker> objects, int index, int r) {
         int n = objects.size();
         List<List<org.one.Worker>> result = new ArrayList<>();
@@ -151,23 +143,32 @@ public class Main {
     }
 
     private static void saveInFile(List<String> result, String pathAndNameFile) {
+        clearFile(pathAndNameFile);
         try (OutputStream f = new FileOutputStream(pathAndNameFile, true);
              OutputStreamWriter writer = new OutputStreamWriter(f)) {
             for (String line : result) {
                 writer.write(line);
-                writer.write(System.getProperty("line.separator"));
+                writer.write(System.lineSeparator());
             }
         } catch (IOException ex) {
             System.out.println("Ошибка записи в файл  " + ex.getMessage());
         }
     }
 
-    public static boolean isNumeric(String str) {
+    private static boolean isNumeric(String str) {
         try {
             new BigDecimal(str);
             return true;
         } catch (NumberFormatException e) {
             return false;
+        }
+    }
+
+    private static void clearFile(String pathAndNameFile) {
+        try (FileWriter writer = new FileWriter(pathAndNameFile)) {
+            writer.write("");
+        } catch (IOException ex) {
+            System.out.println("Ошибка записи в файл  " + ex.getMessage());
         }
     }
 }
