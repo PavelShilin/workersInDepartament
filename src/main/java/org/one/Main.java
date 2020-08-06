@@ -82,16 +82,16 @@ public class Main {
         }
     }
 
-    private static List recursiveCheckOnTransfer(Map<String, Department> departamentMap) {
+    private static List recursiveCheckOnTransfer(Map<String, Department> departmentMap) {
         List<String> result = new ArrayList<>();
-        for (Map.Entry<String, Department> depart1 : departamentMap.entrySet()) {
-            for (Map.Entry<String, Department> depart2 : departamentMap.entrySet()) {
+        for (Map.Entry<String, Department> depart1 : departmentMap.entrySet()) {
+            for (Map.Entry<String, Department> depart2 : departmentMap.entrySet()) {
                 if (depart1.getValue().getName().equals(depart2.getValue().getName())) {
                     continue;
                 }
                 int countWorkersInDepartment = depart1.getValue().getWorkers().size();
                 for (int i = 1; i < countWorkersInDepartment + 1; i++) {
-                    List<List<Worker>> tempList = new ArrayList<>();
+                    List<List<Worker>> tempList;
                     tempList = getCombinationFrom(depart1.getValue().getWorkers(), 0, i);
                     for (List<Worker> work : tempList) {
                         BigDecimal avgSalaryInDeaOld1 = depart1.getValue().getAvgSalary();
@@ -158,7 +158,7 @@ public class Main {
     }
 
     private static List<Worker> join(Worker first, List<Worker> other){
-        List<Worker> joined = new ArrayList();
+        List<Worker> joined = new ArrayList<>();
         joined.add(first);
         joined.addAll(other);
         return joined;
