@@ -24,7 +24,7 @@ public class Main {
     }
 
     private static Map<String, Department> getMapFromFile(String pathAndNameFile) {
-        Map<String, Department> departments = new HashMap<String, Department>();
+        Map<String, Department> departments = new HashMap<>();
         try (BufferedReader bufferedReader = new BufferedReader(
                 new FileReader(pathAndNameFile))) {
             String currentLine;
