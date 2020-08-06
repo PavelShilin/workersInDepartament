@@ -18,8 +18,9 @@ public class Main {
             recursiveCheckOnTransfer(departments);
             if (recursiveCheckOnTransfer(departments).isEmpty()) {
                 saveInFile(new ArrayList<>(Collections.singleton("Подходящих переводов нет")), args[1]);
+            } else {
+                saveInFile(recursiveCheckOnTransfer(departments), args[1]);
             }
-            saveInFile(recursiveCheckOnTransfer(departments), args[1]);
         }
     }
 
@@ -40,7 +41,7 @@ public class Main {
                     if (!departments.containsKey(departmentWorker)) {
                         departments.put(departmentWorker, new Department(departmentWorker));
                     }
-                    departments.get(lineFromFile[3].trim()).addWorker(new Worker(nameWorker, secondNameWorker, salaryWorker));
+                    departments.get(departmentWorker).addWorker(new Worker(nameWorker, secondNameWorker, salaryWorker));
                 }
             }
         } catch (IOException e) {
@@ -75,7 +76,7 @@ public class Main {
                         if (depart1.getAvgSalaryWithoutList(worker).compareTo(depart1.getAvgSalary()) > 0 && depart2.getAvgSalary(worker).compareTo(depart2.getAvgSalary()) > 0) {
                             result.add("Сотрудников отдела " + depart1.getName() + " : ");
                             for (Worker workerInfo : worker) {
-                                result.add(workerInfo.getSecondname() + "/");
+                                result.add(workerInfo.getFirstname()+" "+workerInfo.getSecondname() + "/");
                             }
                             result.add("\n Можно перевести в отдел " + depart2.getName() + " При этом переводе средняя зп в отделе: " + depart1.getName() + "  увеличится на "
                                     + depart1.getAvgSalaryWithoutList(worker).subtract(depart1.getAvgSalary()) + " руб. а , в отделе " + depart2.getName()
