@@ -50,7 +50,6 @@ public class Department {
         return getAverage(result);
     }
 
-
     private BigDecimal getAverage(List<Worker> workers) {
         if (!(workers.size() < 1)) {
             BigDecimal sum = BigDecimal.valueOf(0);
