@@ -91,7 +91,7 @@ public class Main {
     }
 
     private static boolean checkLine(String[] line, int numberLine) {
-        if (line.length < 4) {
+        if (line.length != 4) {
             System.out.println("Нехватает входных данных в строке - " + numberLine);
             return false;
         }

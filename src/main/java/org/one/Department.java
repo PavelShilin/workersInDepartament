@@ -1,8 +1,8 @@
 package org.one;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,14 +52,13 @@ public class Department {
 
 
     private BigDecimal getAverage(List<Worker> workers) {
-        if (!(workers.size() <1)) {
+        if (!(workers.size() < 1)) {
             BigDecimal sum = BigDecimal.valueOf(0);
             for (Worker workerInfo : workers) {
                 sum = sum.add(workerInfo.getSalary());
             }
             return sum.divide(BigDecimal.valueOf(workers.size()), 2, RoundingMode.HALF_UP);
-        }
-        else {
+        } else {
             return BigDecimal.ZERO;
         }
     }
