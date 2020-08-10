@@ -57,7 +57,6 @@ public class Main {
             for (Worker work : depart1.getWorkers()) {
                 System.out.println(work.getSecondname() + " " + work.getFirstname());
             }
-            System.out.println();
         }
     }
 
