@@ -15,7 +15,6 @@ public class Main {
         } else {
             Map<String, Department> departments = getMapFromFile(args[0]);
             printInConsole(departments);
-            recursiveCheckOnTransfer(departments);
             if (recursiveCheckOnTransfer(departments).isEmpty()) {
                 saveInFile(new ArrayList<>(Collections.singleton("Подходящих переводов нет")), args[1]);
             } else {
